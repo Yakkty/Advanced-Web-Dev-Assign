@@ -1,0 +1,10 @@
+.patient-form {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  border-radius: 6px;
+  background: #292929;
+  color: #d3d3d3;
+}
