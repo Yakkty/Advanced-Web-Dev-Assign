@@ -93,6 +93,7 @@ const PatientsPage = () => {
       {!showPatients && (
         <NewPatients
           onSavePatientData={addPatientHandler}
+          onRegister={showPatientListHandler}
           
         />
       )}

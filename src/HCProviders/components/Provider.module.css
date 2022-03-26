@@ -1,0 +1,48 @@
+.provider {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  text-align: center;
+  color: #d3d3d3;
+  background: #292929;
+}
+
+.provider-content {
+  padding: 0;
+  height: 100%;
+}
+
+.provider-image {
+  width: 14rem;
+  height: 14rem;
+  margin: auto;
+  padding: 1rem;
+  
+}
+
+.provider-info {
+  margin: 0 1rem 1rem;
+  background: #292929;
+  color: #d3d3d3;
+  border-radius: 12.5px;
+  padding: 0;
+}
+
+.provider-info h1,
+.provider-info h2,
+.provider-info p {
+  margin: 1rem;
+}
+
+/* .provider-image {
+  width: 100%;
+  height: 10rem;
+
+}
+
+.provider-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12.5px;
+} */

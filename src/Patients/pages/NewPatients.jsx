@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
 import classes from "./PatientForm.module.css";
 
 const NewPatients = (props) => {
-  const history = useHistory();
+  // const history = useHistory();
 
   const [enteredName, setName] = useState("");
   const [enteredAge, setAge] = useState("");
@@ -43,7 +43,8 @@ const NewPatients = (props) => {
       // imageUrl: enteredImage,
     };
     props.onSavePatientData(patientData);
-    history.push("/");
+    props.onRegister();
+    // history.push("/");
     setName("");
     setAge("");
     setStatus("");

@@ -1,0 +1,28 @@
+.new-provider {
+  width: 80%;
+  max-width: 20rem;
+  height: 100%;
+  margin: 1rem auto;
+  text-align: center;
+  background: #292929;
+  color: #d3d3d3;
+  padding: 0;
+
+}
+
+.new-provider__actions {
+  margin: 1rem;
+  padding-bottom: 1rem;
+}
+
+.provider-form {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  border-radius: 6px;
+  background: #292929;
+  color: #d3d3d3;
+}
+
