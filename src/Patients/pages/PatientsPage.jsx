@@ -85,16 +85,23 @@ const PatientsPage = () => {
   return (
     <Fragment>
       <Card className={classes["new-patient"]}>
-        <h2>Patients</h2>
-        <Button onClick={showPatientListHandler}>Show Patients</Button>
-        <Button onClick={hidePatientListHandler}>Register</Button>
+        <div className={classes["new-patient__actions"]}>
+          <h2>Patients</h2>
+          {!showPatients && (
+            <Button onClick={showPatientListHandler}>
+              Show Healthcare Providers
+            </Button>
+          )}
+          {showPatients && (
+            <Button onClick={hidePatientListHandler}>Register</Button>
+          )}
+        </div>
       </Card>
       {showPatients && <PatientsList patients={patientInfo} />};
       {!showPatients && (
         <NewPatients
           onSavePatientData={addPatientHandler}
           onRegister={showPatientListHandler}
-          
         />
       )}
     </Fragment>

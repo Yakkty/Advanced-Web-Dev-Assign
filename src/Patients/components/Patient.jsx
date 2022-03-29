@@ -19,7 +19,7 @@ const Patient = (props) => {
             <a href="https://reactjs.org/logo-og.png">Medical Report</a>
           </div>
           <div className={classes.patient__actions}>
-            <Button>EDIT</Button>
+            <Button to={`/patients/${props.id}`}>EDIT</Button>
             <Button>DELETE</Button>
           </div>
         </div>

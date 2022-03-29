@@ -17,7 +17,6 @@
   height: 14rem;
   margin: auto;
   padding: 1rem;
-  
 }
 
 .provider-info {
@@ -32,6 +31,11 @@
 .provider-info h2,
 .provider-info p {
   margin: 1rem;
+}
+
+.provider-actions {
+  padding: 1rem;
+  margin: 0 auto;
 }
 
 /* .provider-image {

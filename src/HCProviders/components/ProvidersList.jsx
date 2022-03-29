@@ -19,11 +19,12 @@ const ProvidersList = (props) => {
     <Grid
       container
       spacing={{ xs: 2, md: 3 }}
-      columns={{ xs: 4, sm: 8, md: 12 }}
+      columns={{ xs: 4, sm: 6, md: 12 }}
     >
       {props.providers.map((provider) => (
         <Provider
           key={provider.id}
+          id={provider.id}
           name={provider.name}
           role={provider.role}
           description={provider.description}

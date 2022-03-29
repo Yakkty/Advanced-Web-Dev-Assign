@@ -1,0 +1,43 @@
+.room {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+  color: #d3d3d3;
+  background: #292929;
+}
+
+.room-content {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.room-title {
+  padding: 0;
+  margin: 0;
+}
+
+.room-title h2,
+.room-title p {
+  margin: 1rem;
+  padding: 0;
+}
+
+.room-info {
+  margin: 0 1rem 1rem;
+  background: #292929;
+  color: #d3d3d3;
+  border-radius: 12.5px;
+  padding: 0;
+}
+
+.room-info h2,
+.room-info p {
+  margin: 1rem;
+}
+
+.room-actions {
+  padding: 1rem;
+  margin: 0 auto;
+}

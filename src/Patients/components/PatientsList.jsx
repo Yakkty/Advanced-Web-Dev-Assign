@@ -10,6 +10,7 @@ const PatientsList = (props) => {
       {props.patients.map((patient) => (
         <Patient
           key={patient.id}
+          id={patient.id}
           image={patient.imageUrl}
           name={patient.name}
           age={patient.age}

@@ -9,6 +9,7 @@ const Input = (props) => {
         required
         minLength="1"
         onChange={props.onChange}
+        value={props.value}
       />
     ) : (
       <textarea
@@ -18,6 +19,8 @@ const Input = (props) => {
         minLength="1"
         onChange={props.onChange}
         rows={props.rows || 3}
+        value={props.value}
+
       />
     );
   return (

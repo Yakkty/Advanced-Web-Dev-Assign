@@ -2,16 +2,4 @@
   color: #8a8a8a;
 }
 
-.main-navigation__header {
-  width: 3rem;
-  height: 3rem;
-  background: transparent;
-  border: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  cursor: pointer;
-  margin-right: 12rem;
-
-}
 

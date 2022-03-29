@@ -1,13 +1,15 @@
 .new-patient {
   width: 80%;
   max-width: 20rem;
-  height: 10rem;
-  margin: auto;
+  height: 100%;
+  margin: 1rem auto;
   text-align: center;
   background: #292929;
-  color: #d3d3d3
+  color: #d3d3d3;
+  padding: 0;
 }
 
-
-
-
+.new-patient__actions {
+  margin: 1rem;
+  padding-bottom: 1rem;
+}
