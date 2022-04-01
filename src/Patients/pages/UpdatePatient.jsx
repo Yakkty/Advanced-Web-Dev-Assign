@@ -1,106 +1,122 @@
-import { useParams } from "react-router-dom";
+import { useState, useEffect, Fragment } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
-import image from "../../Assets/female doctor.jpg";
-import classes from "./PatientForm.module.css"
-const DUMMY_PATIENTS = [
-  {
-    id: "p1",
-    name: "Rafael",
-    age: "25",
-    gender: "Male",
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p2",
-    name: "Lisa",
-    age: "22",
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
 
-    status: "Recovered",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p3",
-    name: "Tom",
-    age: "19",
+import classes from "./PatientForm.module.css";
 
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p4",
-    name: "Tom",
-    age: "19",
+const UpdatePatient = () => {
+  const { sendRequest } = useHttp();
+  const [patientData, setPatientData] = useState({
+    name: "",
+    age: "",
+    status: "",
+  });
 
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p5",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p6",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-];
-
-const UpdateProvider = () => {
+  const history = useHistory();
   const patientId = useParams().patientId;
 
-  const identifiedPatient = DUMMY_PATIENTS.find((p) => p.id === patientId);
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/patients/${patientId}`
+        );
+        setPatientData({
+          name: responseData.patient.name,
+          age: responseData.patient.age,
+          status: responseData.patient.status,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPatient();
+  }, [sendRequest, patientId, setPatientData]);
 
-  if (!identifiedPatient) {
+  if (!patientData) {
     return (
       <div className="center">
         <h2>Could not find patient</h2>
       </div>
     );
   }
+
+  const updateNameHandler = (event) => {
+    setPatientData({
+      ...patientData,
+      name: event.target.value,
+    });
+  };
+
+  const updateAgeHandler = (event) => {
+    setPatientData({
+      ...patientData,
+      age: event.target.value,
+    });
+  };
+
+  const updateStatusHandler = (event) => {
+    setPatientData({
+      ...patientData,
+      status: event.target.value,
+    });
+  };
+
+  const patientSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/patients/${patientId}`,
+        "PATCH",
+        JSON.stringify({
+          name: patientData.name,
+          age: patientData.age,
+          status: patientData.status,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      history.push("/patients");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes["patient-form"]}>
-      <Input
-        id="name"
-        element="input"
-        type="text"
-        label="Name"
-        onInput={() => {}}
-        value={identifiedPatient.name}
-      />
-      <Input
-        id="age"
-        element="input"
-        type="number"
-        label="Age"
-        onInput={() => {}}
-        value={identifiedPatient.age}
-      />
-      <Input
-        id="status"
-        element="input"
-        label="Patient Status"
-        onInput={() => {}}
-        value={identifiedPatient.status}
-      />
-      <Button type="submit">UPDATE</Button>
-    </form>
+    <Fragment>
+     {patientData && <form className={classes["patient-form"]} onSubmit={patientSubmitHandler}>
+        <Input
+          id="name"
+          element="input"
+          type="text"
+          label="Name"
+          onChange={updateNameHandler}
+          value={patientData.name}
+        />
+        <Input
+          id="age"
+          element="input"
+          type="number"
+          label="Age"
+          onChange={updateAgeHandler}
+          value={patientData.age}
+        />
+        <Input
+          id="status"
+          element="input"
+          label="Patient Status"
+          onChange={updateStatusHandler}
+          value={patientData.status}
+        />
+        <Button type="submit">UPDATE</Button>
+      </form>}
+    </Fragment>
   );
 };
 
-export default UpdateProvider;
+export default UpdatePatient;

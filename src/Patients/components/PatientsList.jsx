@@ -1,5 +1,3 @@
-
-
 import classes from "./PatientsList.module.css";
 
 import Patient from "./Patient";
@@ -9,12 +7,13 @@ const PatientsList = (props) => {
     <ul className={classes["patient-list"]}>
       {props.patients.map((patient) => (
         <Patient
-          key={patient.id}
-          id={patient.id}
-          image={patient.imageUrl}
+          key={patient._id}
+          id={patient._id}
+          image={patient.image}
           name={patient.name}
           age={patient.age}
           status={patient.status}
+          report={patient.report}
         />
       ))}
     </ul>

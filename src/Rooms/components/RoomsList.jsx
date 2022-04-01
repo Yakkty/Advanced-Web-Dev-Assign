@@ -2,7 +2,6 @@ import { Grid } from "@mui/material";
 
 import Room from "./Room";
 
-
 const RoomsList = (props) => {
   return (
     <Grid

@@ -1,72 +1,33 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 
-import image from "../../Assets/tom.png";
 import Card from "../../Shared/Components/UIElements/Card";
 import PatientsList from "../components/PatientsList";
 import NewPatients from "./NewPatients";
 import Button from "../../Shared/Components/FormElements/Button";
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
+
 import classes from "./PatientsPage.module.css";
 
-const DUMMY_PATIENTS = [
-  {
-    id: "p1",
-    name: "Rafael",
-    age: "25",
-    gender: "Male",
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p2",
-    name: "Lisa",
-    age: "22",
-
-    status: "Recovered",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p3",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p4",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p5",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-  {
-    id: "p6",
-    name: "Tom",
-    age: "19",
-
-    status: "Current Patient",
-    reports: "test",
-    imageUrl: image,
-  },
-];
-
 const PatientsPage = () => {
-  const [patientInfo, setPatientData] = useState(DUMMY_PATIENTS);
+  const [patientInfo, setPatientData] = useState();
   const [showPatients, setShowPatients] = useState(true);
+  const { sendRequest } = useHttp();
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/patients"
+        );
+
+        setPatientData(responseData.patients);
+      } catch (err) {
+        console.log(err);
+  
+      }
+    };
+    fetchPatients();
+  }, [sendRequest]);
 
   const addPatientHandler = (patientData) => {
     setPatientData((prevData) => {
@@ -97,7 +58,7 @@ const PatientsPage = () => {
           )}
         </div>
       </Card>
-      {showPatients && <PatientsList patients={patientInfo} />};
+      {showPatients && patientInfo && <PatientsList patients={patientInfo} />};
       {!showPatients && (
         <NewPatients
           onSavePatientData={addPatientHandler}

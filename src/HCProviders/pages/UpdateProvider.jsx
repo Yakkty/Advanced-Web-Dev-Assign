@@ -1,103 +1,126 @@
-import { useParams } from "react-router-dom";
+import { useState, useEffect, Fragment } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
-import image2 from "../../Assets/female doctor.jpg";
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
+
 import classes from "./ProviderForm.module.css";
 
-const DUMMY_PROVIDERS = [
-  {
-    id: "pv1",
-    name: "Tom",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv2",
-    name: "Thomas",
-    role: "Nurse",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv3",
-    name: "Baz",
-    role: "Surgeon",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv4",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv5",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv6",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-];
-
 const UpdateProvider = (props) => {
+  const { sendRequest } = useHttp();
+  const [providerData, setProviderData] = useState({
+    name: "",
+    role: "",
+    description: "",
+  });
+
+  const history = useHistory();
   const providerId = useParams().providerId;
-  console.log(providerId);
 
-  const identifiedProvider = DUMMY_PROVIDERS.find((p) => p.id === providerId);
+  useEffect(() => {
+    const fetchPlace = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/providers/${providerId}`
+        );
+        setProviderData({
+          name: responseData.provider.name,
+          role: responseData.provider.role,
+          description: responseData.provider.description,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPlace();
+  }, [sendRequest, providerId, setProviderData]);
 
-  console.log(identifiedProvider);
-
-  if (!identifiedProvider) {
+  if (!providerData) {
     return (
       <div className="center">
         <h2>Could not find provider</h2>
       </div>
     );
   }
+
+  const updateNameHandler = (event) => {
+    setProviderData({
+      ...providerData,
+      name: event.target.value,
+    });
+  };
+
+  const updateRoleHandler = (event) => {
+    setProviderData({
+      ...providerData,
+      role: event.target.value,
+    });
+  };
+
+  const updateDescriptionHandler = (event) => {
+    setProviderData({
+      ...providerData,
+      description: event.target.value,
+    });
+  };
+
+  const providerSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/providers/${providerId}`,
+        "PATCH",
+        JSON.stringify({
+          name: providerData.name,
+          role: providerData.role,
+          description: providerData.description,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      history.push("/providers");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes["provider-form"]}>
-      <Input
-        id="name"
-        element="input"
-        type="text"
-        label="Name"
-        onInput={() => {}}
-        value={identifiedProvider.name}
-      />
-      <Input
-        id="role"
-        element="input"
-        type="text"
-        label="Role"
-        onInput={() => {}}
-        value={identifiedProvider.role}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        onInput={() => {}}
-        value={identifiedProvider.description}
-      />
-      <Button type="submit">UPDATE</Button>
-    </form>
+    <Fragment>
+      {providerData && (
+        <form
+          className={classes["provider-form"]}
+          onSubmit={providerSubmitHandler}
+        >
+          <Input
+            id="name"
+            element="input"
+            type="text"
+            label="Name"
+            onChange={updateNameHandler}
+            value={providerData.name}
+          />
+          <Input
+            id="role"
+            element="input"
+            type="text"
+            label="Role"
+            onChange={updateRoleHandler}
+            value={providerData.role}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            label="Description"
+            onChange={updateDescriptionHandler}
+            value={providerData.description}
+          />
+          <Button type="submit">UPDATE</Button>
+        </form>
+      )}
+    </Fragment>
   );
 };
 

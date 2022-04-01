@@ -23,8 +23,8 @@ const ProvidersList = (props) => {
     >
       {props.providers.map((provider) => (
         <Provider
-          key={provider.id}
-          id={provider.id}
+          key={provider._id}
+          id={provider._id}
           name={provider.name}
           role={provider.role}
           description={provider.description}

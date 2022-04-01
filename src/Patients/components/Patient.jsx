@@ -16,7 +16,7 @@ const Patient = (props) => {
             <h2>{props.name}</h2>
             <h3>{props.age}</h3>
             <p>{props.status}</p>
-            <a href="https://reactjs.org/logo-og.png">Medical Report</a>
+            <a href={props.report}>Medical Report</a>
           </div>
           <div className={classes.patient__actions}>
             <Button to={`/patients/${props.id}`}>EDIT</Button>

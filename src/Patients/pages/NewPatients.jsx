@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-// import { useHistory } from "react-router-dom";
-
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
+
 import classes from "./PatientForm.module.css";
 
 const NewPatients = (props) => {
@@ -12,6 +12,7 @@ const NewPatients = (props) => {
   const [enteredName, setName] = useState("");
   const [enteredAge, setAge] = useState("");
   const [enteredStatus, setStatus] = useState("");
+  const { sendRequest } = useHttp();
   // const [enteredReport, setReport] = useState(null);
   // const [enteredImage, setImage] = useState(null);
 
@@ -31,25 +32,30 @@ const NewPatients = (props) => {
   //   setImage(event.target.value);
   // };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
 
-    const patientData = {
-      name: enteredName,
-      age: enteredAge,
-      status: enteredStatus,
-      id: Math.random().toString(),
-      // report: enteredReport,
-      // imageUrl: enteredImage,
-    };
-    props.onSavePatientData(patientData);
-    props.onRegister();
-    // history.push("/");
-    setName("");
-    setAge("");
-    setStatus("");
-    // setReport(null);
-    // setImage(null);
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/patients",
+        "POST",
+        JSON.stringify({
+          name: enteredName,
+          age: enteredAge,
+          status: enteredStatus,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      props.onSavePatientData(responseData);
+      props.onRegister();
+      setName("");
+      setAge("");
+      setStatus("");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -1,68 +1,31 @@
-import { Fragment, useState } from "react";
-
-// import image from "../../Assets/male doctor.jpg";
-import image2 from "../../Assets/female doctor.jpg";
+import { Fragment, useState, useEffect } from "react";
 
 import Card from "../../Shared/Components/UIElements/Card";
 import Button from "../../Shared/Components/FormElements/Button";
 import NewProvider from "./NewProvider";
 import ProvidersList from "../components/ProvidersList";
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
+
 import classes from "./ProviderForm.module.css";
 
-const DUMMY_PROVIDERS = [
-  {
-    id: "pv1",
-    name: "Tom",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv2",
-    name: "Thomas",
-    role: "Nurse",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv3",
-    name: "Baz",
-    role: "Surgeon",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv4",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv5",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-  {
-    id: "pv6",
-    name: "Bazo",
-    role: "Doctor",
-    description:
-      "This is a description of a medical professional, they do xyz haha hehe",
-    image: image2,
-  },
-];
-
 const ProvidersPage = () => {
-  const [providerInfo, setProviderInfo] = useState(DUMMY_PROVIDERS);
+  const [providerInfo, setProviderInfo] = useState();
   const [showProviders, setShowProviders] = useState(true);
+  const { sendRequest } = useHttp();
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/providers"
+        );
+        setProviderInfo(responseData.providers);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchProviders();
+  }, [sendRequest]);
 
   const addProviderHandler = (providerData) => {
     setProviderInfo((prevData) => {
@@ -93,7 +56,8 @@ const ProvidersPage = () => {
           )}
         </div>
       </Card>
-      {showProviders && <ProvidersList providers={providerInfo} />};
+      {showProviders && providerInfo && 
+        <ProvidersList providers={providerInfo} />};
       {!showProviders && (
         <NewProvider
           onSaveProviderData={addProviderHandler}

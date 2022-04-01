@@ -2,14 +2,15 @@ import { useState } from "react";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
+import { useHttp } from "../../Shared/Components/hooks/http-hook";
+
 import classes from "./ProviderForm.module.css";
 
 const NewProvider = (props) => {
-  // const history = useHistory();
-
   const [enteredRole, setRole] = useState("");
   const [enteredName, setName] = useState("");
   const [enteredDescription, setDescription] = useState("");
+  const { sendRequest } = useHttp();
   // const [enteredImage, setImage] = useState(null);
 
   const roleChangeHandler = (event) => {
@@ -26,23 +27,32 @@ const NewProvider = (props) => {
   //   setImage(event.target.value);
   // };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
 
-    const providerData = {
-      role: enteredRole,
-      name: enteredName,
-      description: enteredDescription,
-      id: Math.random().toString(),
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/providers",
+        "POST",
+        JSON.stringify({
+          role: enteredRole,
+          name: enteredName,
+          description: enteredDescription,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
 
-      // imageUrl: enteredImage,
-    };
-    props.onSaveProviderData(providerData);
-    props.onRegister();
+      props.onSaveProviderData(responseData);
+      props.onRegister();
 
-    setRole("");
-    setName("");
-    setDescription("");
+      setRole("");
+      setName("");
+      setDescription("");
+    } catch (err) {
+      console.log(err);
+    }
 
     // setImage(null);
   };
@@ -76,8 +86,8 @@ const NewProvider = (props) => {
         value={enteredImage}
         onChange={imageChangeHandler}
       /> */}
-   
-        <Button type="submit">Register</Button>
+
+      <Button type="submit">Register</Button>
     </form>
   );
 };

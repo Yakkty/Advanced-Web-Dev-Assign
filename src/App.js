@@ -55,7 +55,7 @@ function App() {
         <Route path="/patients/:patientId" exact>
           <UpdatePatient />
         </Route>
-        <Route path="/provider" exact>
+        <Route path="/providers" exact>
           <ProvidersPage />
         </Route>
         <Route path="/provider/:providerId" exact>
