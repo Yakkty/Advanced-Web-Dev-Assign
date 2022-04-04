@@ -41,6 +41,13 @@ const ProvidersPage = () => {
   const hideProviderListHandler = () => {
     setShowProviders(false);
   };
+
+  const providerDeletedHandler = (deletedProviderId) => {
+    setProviderInfo((prevProviders) =>
+      prevProviders.filter((provider) => provider.id !== deletedProviderId)
+    );
+  };
+
   return (
     <Fragment>
       <Card className={classes["new-provider"]}>
@@ -56,8 +63,13 @@ const ProvidersPage = () => {
           )}
         </div>
       </Card>
-      {showProviders && providerInfo && 
-        <ProvidersList providers={providerInfo} />};
+      {showProviders && providerInfo && (
+        <ProvidersList
+          providers={providerInfo}
+          onDeleteProvider={providerDeletedHandler}
+        />
+      )}
+      ;
       {!showProviders && (
         <NewProvider
           onSaveProviderData={addProviderHandler}

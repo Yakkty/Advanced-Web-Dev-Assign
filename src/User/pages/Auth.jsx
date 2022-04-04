@@ -24,7 +24,7 @@ const Auth = () => {
     event.preventDefault();
 
     try {
-      await sendRequest(
+      const responseData = await sendRequest(
         "http://localhost:5000/api/users/login",
         "POST",
         JSON.stringify({
@@ -36,7 +36,7 @@ const Auth = () => {
         }
       );
 
-      auth.login();
+      auth.login(responseData.userId, responseData.token);
     } catch (err) {
       console.log(err);
       throw err;

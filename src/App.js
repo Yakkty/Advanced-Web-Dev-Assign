@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,20 +18,67 @@ import UpdateProvider from "./HCProviders/pages/UpdateProvider";
 import Auth from "./User/pages/Auth";
 import { AuthContext } from "./Shared/Components/context/auth-context";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+let logoutTimer;
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
+function App() {
+  const [token, setToken] = useState(false);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState();
+  const [userId, setUserId] = useState(false);
+
+  const login = useCallback((uid, token, expirationDate) => {
+    setToken(token);
+    setUserId(uid);
+
+    //Create an expiration time one hour from token creation or set it to existing expiration date
+    const tokenExpiration =
+      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+    setTokenExpirationDate(tokenExpiration);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        userId: uid,
+        token: token,
+        expiration: tokenExpiration.toISOString(),
+      })
+    );
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
+    setTokenExpirationDate(null);
+    setUserId(null);
+    localStorage.removeItem("userData");
   }, []);
+
+  useEffect(() => {
+    if (token && tokenExpirationDate) {
+      const tokenDuration =
+        tokenExpirationDate.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(logout, tokenDuration);
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [token, logout, tokenExpirationDate]);
+
+  useEffect(() => {
+    const storageData = JSON.parse(localStorage.getItem("userData"));
+    if (
+      storageData &&
+      storageData.token &&
+      //Token is valid if expiration date is in the future still
+      new Date(storageData.expiration) > new Date()
+    ) {
+      login(
+        storageData.userId,
+        storageData.token,
+        new Date(storageData.expiration)
+      );
+    }
+  }, [login]);
 
   let routes;
 
-  if (!isLoggedIn) {
+  if (!token) {
     routes = (
       <Switch>
         <Route path="/" exact>
@@ -74,7 +121,13 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout,
+      }}
     >
       <Router>
         <MainNavigation />

@@ -1,13 +1,15 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useContext, Fragment } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
 import { useHttp } from "../../Shared/Components/hooks/http-hook";
+import { AuthContext } from "../../Shared/Components/context/auth-context";
 
 import classes from "./PatientForm.module.css";
 
 const UpdatePatient = () => {
+  const auth = useContext(AuthContext);
   const { sendRequest } = useHttp();
   const [patientData, setPatientData] = useState({
     name: "",
@@ -79,6 +81,7 @@ const UpdatePatient = () => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
       history.push("/patients");
@@ -89,32 +92,37 @@ const UpdatePatient = () => {
 
   return (
     <Fragment>
-     {patientData && <form className={classes["patient-form"]} onSubmit={patientSubmitHandler}>
-        <Input
-          id="name"
-          element="input"
-          type="text"
-          label="Name"
-          onChange={updateNameHandler}
-          value={patientData.name}
-        />
-        <Input
-          id="age"
-          element="input"
-          type="number"
-          label="Age"
-          onChange={updateAgeHandler}
-          value={patientData.age}
-        />
-        <Input
-          id="status"
-          element="input"
-          label="Patient Status"
-          onChange={updateStatusHandler}
-          value={patientData.status}
-        />
-        <Button type="submit">UPDATE</Button>
-      </form>}
+      {patientData && (
+        <form
+          className={classes["patient-form"]}
+          onSubmit={patientSubmitHandler}
+        >
+          <Input
+            id="name"
+            element="input"
+            type="text"
+            label="Name"
+            onChange={updateNameHandler}
+            value={patientData.name}
+          />
+          <Input
+            id="age"
+            element="input"
+            type="number"
+            label="Age"
+            onChange={updateAgeHandler}
+            value={patientData.age}
+          />
+          <Input
+            id="status"
+            element="input"
+            label="Patient Status"
+            onChange={updateStatusHandler}
+            value={patientData.status}
+          />
+          <Button type="submit">UPDATE</Button>
+        </form>
+      )}
     </Fragment>
   );
 };

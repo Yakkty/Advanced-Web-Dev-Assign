@@ -7,7 +7,7 @@ import { useHttp } from "../../Shared/Components/hooks/http-hook";
 import classes from "./RoomPage.module.css";
 
 const RoomPage = () => {
-  const [roomData, setRoomData] = useState();
+  const [roomData, setRoomData] = useState([]);
   const { sendRequest } = useHttp();
 
   useEffect(() => {
@@ -25,18 +25,21 @@ const RoomPage = () => {
     fetchRooms();
   }, [sendRequest]);
 
-  // const filteredRoomsArray = roomData.filter((room) => {
-  //   return room.roomAvailability === "Available";
-  // });
+  const roomAvailabilityArray = [...roomData, []];
 
-  // const numberOfAvailableRooms = filteredRoomsArray.length.toString();
+
+  const filteredRoomAvailabilityArray = roomAvailabilityArray.filter((room) => {
+    return room.roomAvailability === "Available";
+  });
+
+  const numberOfAvailableRooms = filteredRoomAvailabilityArray.length.toString();
 
   return (
     <Fragment>
       <Card className={classes["room-page__title"]}>
         <h1>John Bazwells COVID Clinic</h1>
         <p>Total Number of Rooms: 6</p>
-        <p>Number of Available Rooms: x</p>
+        <p>Number of Available Rooms: {numberOfAvailableRooms}</p>
       </Card>
       {roomData && <RoomsList rooms={roomData} />}
     </Fragment>

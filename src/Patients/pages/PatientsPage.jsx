@@ -23,7 +23,6 @@ const PatientsPage = () => {
         setPatientData(responseData.patients);
       } catch (err) {
         console.log(err);
-  
       }
     };
     fetchPatients();
@@ -36,13 +35,21 @@ const PatientsPage = () => {
     console.log(patientData);
   };
 
-  const showPatientListHandler = (event) => {
+  const showPatientListHandler = () => {
     setShowPatients(true);
   };
 
   const hidePatientListHandler = () => {
     setShowPatients(false);
   };
+
+  const patientDeletedHandler = (deletedPatientId) => {
+    setPatientData((prevPatients) =>
+    prevPatients.filter((patient) => patient.id !== deletedPatientId)
+    );
+  };
+  
+
   return (
     <Fragment>
       <Card className={classes["new-patient"]}>
@@ -58,7 +65,13 @@ const PatientsPage = () => {
           )}
         </div>
       </Card>
-      {showPatients && patientInfo && <PatientsList patients={patientInfo} />};
+      {showPatients && patientInfo && (
+        <PatientsList
+          patients={patientInfo}
+          onDeletePatient={patientDeletedHandler}
+        />
+      )}
+      ;
       {!showPatients && (
         <NewPatients
           onSavePatientData={addPatientHandler}

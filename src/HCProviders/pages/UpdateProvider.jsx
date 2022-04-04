@@ -1,13 +1,15 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useContext, Fragment } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import Input from "../../Shared/Components/FormElements/Input";
 import Button from "../../Shared/Components/FormElements/Button";
 import { useHttp } from "../../Shared/Components/hooks/http-hook";
+import { AuthContext } from "../../Shared/Components/context/auth-context";
 
 import classes from "./ProviderForm.module.css";
 
 const UpdateProvider = (props) => {
+  const auth = useContext(AuthContext);
   const { sendRequest } = useHttp();
   const [providerData, setProviderData] = useState({
     name: "",
@@ -79,6 +81,7 @@ const UpdateProvider = (props) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
       history.push("/providers");

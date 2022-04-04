@@ -20,3 +20,31 @@
   color: #d3d3d3;
 }
 
+.dropdown {
+  padding-bottom: 1.5rem;
+}
+
+
+.dropdown-actions {
+  background-color: #d3d3d3;
+  color: 292929;
+  padding: 0.5rem;
+  width: 30%;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
+.dropdown-actions select,
+.dropdown-actions option {
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.dropdown-label {
+  display: block;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
