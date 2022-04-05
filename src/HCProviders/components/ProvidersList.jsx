@@ -1,3 +1,8 @@
+//This component is responsible for rendering every provider in a grid layout, using material ui Grid
+//This is achieved by calling the array.map method on the provider data, which will render a Provider child component
+//for every provider in the array.
+//All relevant data and functions respective to that provider will be passed as props
+
 import { Grid } from "@mui/material/";
 
 // import classes from "./ProvidersList.module.css";

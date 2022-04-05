@@ -1,3 +1,8 @@
+//This component is responsible for displaying a list of patients, which is dynamically set
+//This is achieved by calling the array.map method on the patient data, and mapping each patient in the array to
+//a child element that receives all required data and functions via props
+
+//imports
 import classes from "./PatientsList.module.css";
 
 import Patient from "./Patient";
@@ -9,7 +14,6 @@ const PatientsList = (props) => {
         <Patient
           key={patient._id}
           id={patient._id}
-          // image={""}
           name={patient.name}
           age={patient.age}
           status={patient.status}

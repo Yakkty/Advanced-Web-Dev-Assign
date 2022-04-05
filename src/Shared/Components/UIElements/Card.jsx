@@ -1,6 +1,8 @@
+//This is a reusable card component
+
 import classes from "./Card.module.css";
 
-//Card is a UI element 
+//Card is a UI element
 const Card = (props) => {
   return (
     //Styling the card with card specific styling, along with allowing the option to dynamically style the card in individual components

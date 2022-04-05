@@ -1,3 +1,10 @@
+//This component displays an individual room item in the rooms list component.
+//This component displays a grid item, with values obtained via props from the rooms list
+
+//This component also has a button which will take a user to a page to update the respective room
+//This is accomplished using react router doms Link element, and dynamically setting the url with props
+
+//imports
 import { Grid } from "@mui/material";
 
 import Card from "../../Shared/Components/UIElements/Card";
